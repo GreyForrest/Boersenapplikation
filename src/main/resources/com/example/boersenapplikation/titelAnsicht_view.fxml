@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.boersenapplikation.controller.TitelAnsichtController">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="750.0">
+         <children>
+            <Label fx:id="titelLbl" layoutX="34.0" layoutY="24.0" prefHeight="58.0" prefWidth="629.0" text="Titel " textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Button fx:id="zurueckBtn" layoutX="680.0" layoutY="555.0" mnemonicParsing="false" onAction="#onZurueckBtnClick" text="Zurück" textFill="WHITE" />
+            <LineChart fx:id="chartDetailed" layoutX="14.0" layoutY="112.0" prefHeight="224.0" prefWidth="722.0">
+              <xAxis>
+                <NumberAxis side="BOTTOM" fx:id="xAxis" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <Label fx:id="symbolLbl" layoutX="34.0" layoutY="90.0" text="Symbol" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <GridPane layoutX="47.0" layoutY="337.0" prefHeight="201.0" prefWidth="630.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="20.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="20.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="vortagLbl" prefHeight="30.0" prefWidth="315.0" text="Vortag" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="eroeffnungLbl" prefHeight="30.0" prefWidth="319.0" text="Eröffnung" textFill="WHITE" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="tagesHochLbl" prefHeight="30.0" prefWidth="313.0" text="TagesHoch" textFill="WHITE" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="tagesTiefLbl" prefHeight="30.0" prefWidth="319.0" text="TagesTief" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="marktkapitalLbl" prefHeight="50.0" prefWidth="316.0" text="Marktkapital" textFill="WHITE" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JahresHochLbl" prefHeight="30.0" prefWidth="314.0" text="JahresHoch" textFill="WHITE" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="JahresTiefLbl" prefHeight="30.0" prefWidth="319.0" text="JahresTief" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label fx:id="kursLbl" layoutX="313.0" layoutY="90.0" text="Kurs" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="changelbl" layoutX="488.0" layoutY="90.0" text="Veränderung" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button fx:id="favoritBtn" layoutX="682.0" layoutY="41.0" mnemonicParsing="false" onAction="#onFavoritHinzufuegen" prefHeight="30.0" prefWidth="54.0" text="★" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

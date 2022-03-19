@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="750.0" spacing="20.0" styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.boersenapplikation.controller.UebersichtController">
+    <children>
+        <AnchorPane prefHeight="688.0" prefWidth="766.0">
+            <children>
+                <TextField fx:id="searchbarTextField" layoutX="43.0" layoutY="89.0" prefHeight="26.0" prefWidth="446.0" promptText="Suche nach einer Aktie" />
+                <Button fx:id="searchBtn" layoutX="575.0" layoutY="89.0" mnemonicParsing="false" onAction="#onSearchBtnClick" prefHeight="26.0" prefWidth="94.0" text="Suchen" textFill="WHITE" />
+                <Label layoutX="43.0" layoutY="149.0" text="Favorisierte Titel" textFill="WHITE">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+                <LineChart fx:id="chart" layoutX="43.0" layoutY="197.0" prefHeight="374.0" prefWidth="446.0" style="-fx-background-color: #1f1f1f;">
+                    <xAxis>
+                        <NumberAxis side="BOTTOM" fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" side="LEFT" />
+                    </yAxis>
+                </LineChart>
+                <ListView fx:id="titleListView" layoutX="495.0" layoutY="197.0" onMouseClicked="#onListViewClick" prefHeight="374.0" prefWidth="200.0" />
+                <Button fx:id="logoutButton" layoutX="622.0" layoutY="1.0" mnemonicParsing="false" onAction="#onLogoutBtnClick" prefHeight="26.0" prefWidth="94.0" text="Abmelden" textFill="WHITE" />
+                <Label fx:id="usernameLbl" layoutX="489.0" layoutY="5.0" text="username" textFill="WHITE" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

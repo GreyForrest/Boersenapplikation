@@ -1,0 +1,144 @@
+package com.example.boersenapplikation;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Sql {
+    private Connection c = null;
+    private Statement stmt = null;
+    private boolean wasSuccessful = false;
+    private Messages message = new Messages();
+
+    public boolean createTableIfNotExists() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+            System.out.println("Opened database successfully");
+
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS shareholders " +
+                    "(username TEXT PRIMARY KEY     NOT NULL," +
+                    " password           TEXT    NOT NULL, " +
+                    "favouriteTitles TEXT DEFAULT (NULL));";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            c.close();
+            wasSuccessful = true;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+            wasSuccessful = false;
+        }
+        System.out.println("Table created successfully");
+        return wasSuccessful;
+    }
+
+    public boolean checkIfUsernameIsAvailable(String username){
+        boolean isAvailable = true;
+        if(username.contains(" ") || username.length() < 3){
+             return false;
+        }
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "SELECT username FROM shareholders;";
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                if(rs.getString("username").equals(username)){
+                    isAvailable = false;
+                }
+            }
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            isAvailable = false;
+        }
+        return isAvailable;
+    }
+
+    public boolean insertNewShareholder(String username, String password) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "INSERT INTO shareholders (username, password) " +
+                    "VALUES ('" + username + "','" + password + "');";
+            stmt.executeUpdate(sql);
+            c.commit();
+            c.close();
+            wasSuccessful = true;
+        } catch (Exception e) {
+            wasSuccessful = false;
+        }
+        return wasSuccessful;
+    }
+
+    public boolean updateShareholder(String favouriteTitles, String username) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "UPDATE shareholders SET favouriteTitles = '" + favouriteTitles + "' WHERE username = '" + username + "';";
+            stmt.executeUpdate(sql);
+            c.commit();
+            c.close();
+            wasSuccessful = true;
+        } catch (Exception e) {
+            wasSuccessful = false;
+        }
+        return wasSuccessful;
+    }
+
+    public String getFavouriteTitles(String username) {
+        String favouriteTitles = "";
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "SELECT * FROM shareholders WHERE username='" + username + "';";
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                favouriteTitles += rs.getString("favouriteTitles") + ";";
+            }
+            c.commit();
+            c.close();
+            wasSuccessful = true;
+        } catch (Exception e) {
+            wasSuccessful = false;
+        }
+        return favouriteTitles;
+    }
+
+    public boolean checkPassword(String username, String password) {
+        String databasePassword = "";
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "SELECT * FROM shareholders WHERE username = '" + username + "';";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                databasePassword = rs.getString("password");
+            }
+            c.close();
+            if (password.equals(databasePassword)){
+                return true;
+            }else{
+                message.getErrorMessage("User oder Passwort existiert nicht.");
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}

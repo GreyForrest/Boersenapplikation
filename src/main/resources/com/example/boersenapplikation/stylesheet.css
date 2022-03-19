@@ -1,0 +1,40 @@
+.root {
+    -fx-background-color: #404040;
+}
+
+.root * {
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-background-color: #1f1f1f;
+}
+
+.list-view {
+    -fx-control-inner-background: #1f1f1f;
+}
+
+.list-cell:filled:selected {
+    -fx-control-inner-background: #0096FF;
+}
+
+.text-field {
+    -fx-control-inner-background: #1f1f1f;
+    -fx-prompt-text-fill: #AAAAAA;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+#chartDetailed .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+#chart .chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #808080;
+}
+
+.chart-series-line {
+    -fx-stroke: #50C878;
+}

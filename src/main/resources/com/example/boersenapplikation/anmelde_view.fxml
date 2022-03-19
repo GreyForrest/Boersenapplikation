@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="250.0" styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.boersenapplikation.controller.AnmeldeController">
+   <children>
+      <AnchorPane prefHeight="300.0" prefWidth="250.0" styleClass="root">
+         <children>
+            <TextField fx:id="usernameField" layoutX="51.0" layoutY="65.0" promptText="Name" styleClass="text-field" />
+            <Button fx:id="loginBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="201.0" mnemonicParsing="false" onAction="#onLoginBtnClick" prefWidth="85.0" text="Registrieren" textAlignment="CENTER" textFill="WHITE" />
+            <Button fx:id="switchLoginBtn" layoutX="65.0" layoutY="240.0" mnemonicParsing="false" onAction="#onSwitchLoginBtnClick" prefWidth="120.0" text="Bereits ein Konto?" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="loginTitleLbl" layoutX="51.0" layoutY="20.0" prefWidth="178.0" text="Registrieren" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="passwordField" layoutX="51.0" layoutY="105.0" promptText="Passwort" styleClass="text-field" />
+            <PasswordField fx:id="repeatPasswordField" layoutX="51.0" layoutY="145.0" promptText="Passwort wiederholen" styleClass="text-field" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
