@@ -55,26 +55,26 @@ public class TitelAnsichtController {
     public final String YELLOW_TEXT = "-fx-text-fill: yellow; -fx-background-color: #111111;";
     public final String WHITE_TEXT = "-fx-text-fill: white; -fx-background-color: #111111;";
 
-    public void setUpController(StockService stockService, Titel stock, Shareholder shareholder) {
+    public void setUpController(Titel stock, Shareholder shareholder) {
         this.stock = stock;
         this.shareholder = shareholder;
         titelLbl.setText(StockService.getName(stock));
-        symbolLbl.setText(stockService.getSymbol(stock));
-        kursLbl.setText("Kurs: " + stockService.formatNumbers(stockService.getPrice(stock)) + "$");
-        changelbl.setText("Veränderung: " + stockService.formatNumbers(stockService.getChangeInCurrency(stock)) + "$ / " + stockService.formatNumbers(stockService.getChangeInPercent(stock)) + "%");
-        vortagLbl.setText("Vortag: " + stockService.formatNumbers(stockService.getPreviousClose(stock)) + "$");
-        eroeffnungLbl.setText("Eröffnung: " + stockService.formatNumbers(stockService.getOpen(stock)) + "$");
-        tagesHochLbl.setText("Tageshoch: " + stockService.formatNumbers(stockService.getDayHigh(stock)) + "$");
-        tagesTiefLbl.setText("Tagestief: " + stockService.formatNumbers(stockService.getDayLow(stock)) + "$");
-        JahresHochLbl.setText("Jahreshoch: " + stockService.formatNumbers(stockService.getYearHigh(stock)) + "$");
-        JahresTiefLbl.setText("Jahrestief: " + stockService.formatNumbers(stockService.getYearLow(stock)) + "$");
-        marktkapitalLbl.setText("Marktkapital: " + stockService.formatNumbers(stockService.getMarketCap(stock)) + "$");
+        symbolLbl.setText(StockService.getSymbol(stock));
+        kursLbl.setText("Kurs: " + StockService.formatNumbers(StockService.getPrice(stock)) + "$");
+        changelbl.setText("Veränderung: " + StockService.formatNumbers(StockService.getChangeInCurrency(stock)) + "$ / " + StockService.formatNumbers(StockService.getChangeInPercent(stock)) + "%");
+        vortagLbl.setText("Vortag: " + StockService.formatNumbers(StockService.getPreviousClose(stock)) + "$");
+        eroeffnungLbl.setText("Eröffnung: " + StockService.formatNumbers(StockService.getOpen(stock)) + "$");
+        tagesHochLbl.setText("Tageshoch: " + StockService.formatNumbers(StockService.getDayHigh(stock)) + "$");
+        tagesTiefLbl.setText("Tagestief: " + StockService.formatNumbers(StockService.getDayLow(stock)) + "$");
+        JahresHochLbl.setText("Jahreshoch: " + StockService.formatNumbers(StockService.getYearHigh(stock)) + "$");
+        JahresTiefLbl.setText("Jahrestief: " + StockService.formatNumbers(StockService.getYearLow(stock)) + "$");
+        marktkapitalLbl.setText("Marktkapital: " + StockService.formatNumbers(StockService.getMarketCap(stock)) + "$");
         xAxis.setTickLabelsVisible(false);
         xAxis.setOpacity(0);
         XYChart.Series series = new XYChart.Series();
-        List<String> yDates = stockService.getHistory(stock);
+        List<String> yDates = StockService.getHistory(stock);
         series.setName("Preiskurve vom letzten Jahr");
-        UebersichtController.setSeriesAndSetup(stock, series, yDates, yAxis, stockService, xAxis, chartDetailed);
+        UebersichtController.setSeriesAndSetup(stock, series, yDates, yAxis, xAxis, chartDetailed);
         if(Double.valueOf(StockService.getYearHigh(stock)) - Double.valueOf(StockService.getYearLow(stock)) > 100) {
             yAxis.setTickUnit((Double.valueOf(StockService.getYearHigh(stock)) - Double.valueOf(StockService.getYearLow(stock))) / 10);
         } else {
@@ -106,31 +106,25 @@ public class TitelAnsichtController {
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
         }
     }
 
     public void onFavoritHinzufuegen(){
         boolean removed = false;
-        int countEmptySpaces = 0;
-        Messages messages = new Messages();
-        String[] titles = shareholder.getTitles();
-        for(String title : titles){
-            if(StockService.getSymbol(stock).equals(title)) {
+        List<String> titles = shareholder.getTitles();
+        for(String title : titles) {
+            if (StockService.getSymbol(stock).equals(title)) {
                 shareholder.removeFavouriteTitle(stock);
                 removed = true;
                 favoritBtn.setStyle(WHITE_TEXT);
-            } else if (title == null) {
-                countEmptySpaces++;
+                break;
             }
         }
         if(!removed){
-            if(countEmptySpaces > 0){
                 shareholder.addFavouriteTitle(stock);
                 favoritBtn.setStyle(YELLOW_TEXT);
-            }  else{
-                messages.getErrorMessage("Leider haben Sie die maximale Anzahl an Favoriten erreicht.");
             }
         }
 
-    }
 }

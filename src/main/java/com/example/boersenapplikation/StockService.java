@@ -122,14 +122,15 @@ public class StockService {
         return null;
     }
 
-    public String formatNumbers(String price){
-        char[] priceArray = null;
-        String[] priceSplitted = new String[2];
+    public static String formatNumbers(String price){
+        char[] priceArray;
+        String[] priceSplitted;
         String attachment = "";
         boolean hasDecimalPoint = false;
         for(char number : price.toCharArray()){
             if(number == '.'){
                 hasDecimalPoint = true;
+                break;
             }
         }
         if(hasDecimalPoint){

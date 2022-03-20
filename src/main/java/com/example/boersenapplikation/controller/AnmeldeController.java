@@ -42,11 +42,11 @@ public class AnmeldeController {
                 if (passwordField.getText().equals(repeatPasswordField.getText())) {
                     shareholder.registerShareholder(repeatPasswordField.getText());
                 } else {
-                    new Messages().getErrorMessage("Die Passwörter stimmen nicht überein.");
+                    Messages.getErrorMessage("Die Passwörter stimmen nicht überein.");
                     canNextWindowBeOpened = false;
                 }
             } else {
-                new Messages().getErrorMessage("Dieser Username ist nicht verfügbar. Bitte versuchen Sie einen anderen Username und\n" +
+                Messages.getErrorMessage("Dieser Username ist nicht verfügbar. Bitte versuchen Sie einen anderen Username und\n" +
                         "stellen Sie sicher, dass Sie keinen Leerschlag benutzen und der Username 3 oder mehr Zeichen beträgt.");
                 canNextWindowBeOpened = false;
             }

@@ -29,8 +29,6 @@ public class UebersichtController {
     @FXML
     private ListView titleListView;
     @FXML
-    private Button logoutButton;
-    @FXML
     private Label usernameLbl;
     @FXML
     private LineChart<Number, Number> chart;
@@ -40,7 +38,6 @@ public class UebersichtController {
     private NumberAxis yAxis;
 
     private Shareholder shareholder;
-    private StockService stockService = new StockService();
 
     public void setUpController(Shareholder shareholder) {
         this.shareholder = shareholder;
@@ -52,16 +49,19 @@ public class UebersichtController {
 
     public void onSearchBtnClick(ActionEvent actionEvent) {
         try {
-            Titel stock = stockService.findStock(searchbarTextField.getText().toUpperCase());
+            Titel stock = StockService.findStock(searchbarTextField.getText().toUpperCase());
+            if(stock == null){
+                throw new Exception();
+            }
             Stage stage = (Stage) searchBtn.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(Boersenapplikation.class.getResource("titelAnsicht_view.fxml"));
             Parent root = fxmlLoader.load();
-            TitelAnsichtController titelAnsichtController = (TitelAnsichtController) fxmlLoader.getController();
-            titelAnsichtController.setUpController(stockService, stock, shareholder);
+            TitelAnsichtController titelAnsichtController = fxmlLoader.getController();
+            titelAnsichtController.setUpController(stock, shareholder);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Titel wurde nicht gefunden");
@@ -69,8 +69,6 @@ public class UebersichtController {
                     " also einem 4-stelligen Namen suchen (zum Beispiel TSLA für die Tesla-Aktie).");
             alert.show();
 
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
         }
     }
 
@@ -86,11 +84,12 @@ public class UebersichtController {
             ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
 
         } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
         }
     }
 
     public void refreshFavouriteTitles() {
-        titleListView.setItems(FXCollections.observableArrayList(shareholder.getTitlesForDisplay()));
+        titleListView.setItems(FXCollections.observableArrayList(shareholder.getTitles()));
     }
 
     public void onListViewClick(MouseEvent mouseEvent) throws IOException {
@@ -100,18 +99,18 @@ public class UebersichtController {
 
             chart.getData().removeAll();
             XYChart.Series series = new XYChart.Series();
-            List<String> yDates = stockService.getHistory(stock);
+            List<String> yDates = StockService.getHistory(stock);
             series.setName(stockString);
             if(Double.valueOf(StockService.getYearHigh(stock)) - Double.valueOf(StockService.getYearLow(stock)) > 10) {
                 yAxis.setTickUnit((Double.valueOf(StockService.getYearHigh(stock)) - Double.valueOf(StockService.getYearLow(stock))) / 10);
             } else {
                 yAxis.setTickUnit(2);
             }
-            UebersichtController.setSeriesAndSetup(stock, series, yDates, yAxis, stockService, xAxis, chart);
+            UebersichtController.setSeriesAndSetup(stock, series, yDates, yAxis, xAxis, chart);
         }
     }
 
-    public static void setSeriesAndSetup(Titel stock, XYChart.Series series, List<String> yDates, NumberAxis yAxis, StockService stockService, NumberAxis xAxis, LineChart<Number, Number> chart) {
+    public static void setSeriesAndSetup(Titel stock, XYChart.Series series, List<String> yDates, NumberAxis yAxis, NumberAxis xAxis, LineChart<Number, Number> chart) {
         for (int i = 1; i <= yDates.size(); i++) {
             double yPoint = Double.parseDouble(yDates.get(i - 1));
             int intYPoint = (int) yPoint;
@@ -120,8 +119,8 @@ public class UebersichtController {
         chart.setLegendVisible(false);
         chart.setAnimated(false);
         yAxis.setAutoRanging(false);
-        yAxis.setLowerBound((int) Double.parseDouble(stockService.getYearLow(stock)) - 10);
-        yAxis.setUpperBound((int) Double.parseDouble(stockService.getYearHigh(stock)) + 10);
+        yAxis.setLowerBound((int) Double.parseDouble(StockService.getYearLow(stock)) - 10);
+        yAxis.setUpperBound((int) Double.parseDouble(StockService.getYearHigh(stock)) + 10);
         xAxis.setAutoRanging(false);
         xAxis.setUpperBound(yDates.size());
 

@@ -8,10 +8,8 @@ import java.sql.Statement;
 public class Sql {
     private Connection c = null;
     private Statement stmt = null;
-    private boolean wasSuccessful = false;
-    private Messages message = new Messages();
 
-    public boolean createTableIfNotExists() {
+    public void createTableIfNotExists() {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -25,14 +23,11 @@ public class Sql {
             stmt.executeUpdate(sql);
             stmt.close();
             c.close();
-            wasSuccessful = true;
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
-            wasSuccessful = false;
         }
         System.out.println("Table created successfully");
-        return wasSuccessful;
     }
 
     public boolean checkIfUsernameIsAvailable(String username){
@@ -55,12 +50,13 @@ public class Sql {
             c.commit();
             c.close();
         } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
             isAvailable = false;
         }
         return isAvailable;
     }
 
-    public boolean insertNewShareholder(String username, String password) {
+    public void insertNewShareholder(String username, String password) {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -71,14 +67,12 @@ public class Sql {
             stmt.executeUpdate(sql);
             c.commit();
             c.close();
-            wasSuccessful = true;
         } catch (Exception e) {
-            wasSuccessful = false;
+            System.err.println(e.getLocalizedMessage());
         }
-        return wasSuccessful;
     }
 
-    public boolean updateShareholder(String favouriteTitles, String username) {
+    public void updateShareholder(String favouriteTitles, String username) {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
@@ -89,11 +83,9 @@ public class Sql {
             stmt.executeUpdate(sql);
             c.commit();
             c.close();
-            wasSuccessful = true;
         } catch (Exception e) {
-            wasSuccessful = false;
+            System.err.println(e.getLocalizedMessage());
         }
-        return wasSuccessful;
     }
 
     public String getFavouriteTitles(String username) {
@@ -110,9 +102,9 @@ public class Sql {
             }
             c.commit();
             c.close();
-            wasSuccessful = true;
+
         } catch (Exception e) {
-            wasSuccessful = false;
+            System.err.println(e.getLocalizedMessage());
         }
         return favouriteTitles;
     }
@@ -133,7 +125,7 @@ public class Sql {
             if (password.equals(databasePassword)){
                 return true;
             }else{
-                message.getErrorMessage("User oder Passwort existiert nicht.");
+                Messages.getErrorMessage("User oder Passwort existiert nicht.");
                 return false;
             }
 
